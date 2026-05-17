@@ -184,6 +184,88 @@ select option {
   background: #FFFFFF;
 }
 
+.custom-select {
+  position: relative;
+}
+
+.custom-select-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #FCF7F0;
+  color: var(--text);
+  padding: 10px 14px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.custom-select-toggle:hover {
+  background: #F5EEE5;
+}
+
+.custom-select-dot,
+.custom-option-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.custom-select-value {
+  flex: 1;
+  text-align: left;
+}
+
+.custom-select-icon {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.custom-select-list {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #FFFFFF;
+  box-shadow: 0 10px 24px rgba(20, 20, 19, 0.08);
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+  max-height: 260px;
+  overflow: auto;
+}
+
+.custom-select-list[hidden] {
+  display: none;
+}
+
+.custom-select-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.custom-select-item:hover,
+.custom-select-item:focus {
+  outline: none;
+  background: rgba(217, 119, 87, 0.08);
+}
+
+.custom-select-item span:last-child {
+  flex: 1;
+}
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -195,8 +277,9 @@ select option {
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
+  transition: transform 0.18s ease, background-color 0.18s ease, opacity 0.18s ease;
   text-decoration: none;
+  box-shadow: 0 2px 5px rgba(20, 20, 19, 0.05);
 }
 
 .button:hover {
@@ -207,12 +290,16 @@ select option {
 .button {
   background: var(--accent);
   color: #FFFFFF;
-  box-shadow: 0 10px 20px rgba(217, 119, 87, 0.12);
 }
 
 .button.primary:hover,
 .button:hover {
   opacity: 0.95;
+}
+
+.button.outline,
+.button.danger {
+  box-shadow: none;
 }
 
 .button.outline {
@@ -237,12 +324,15 @@ select option {
 
 .button.danger {
   background: transparent;
-  color: var(--muted);
+  color: #8C4A36;
+  border-color: rgba(140, 74, 54, 0.16);
 }
 
 .button.danger:hover {
-  color: var(--text);
-  background: rgba(20, 20, 19, 0.04);
+  color: #6F382A;
+  background: rgba(140, 74, 54, 0.08);
+  text-decoration: underline;
+  opacity: 0.95;
 }
 
 .button.danger:hover {
@@ -358,13 +448,18 @@ select option {
 }
 
 .column-header {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  gap: 10px;
   margin-bottom: 18px;
-  font-weight: 600;
   color: var(--text);
+}
+
+.column-header > span {
+  font-weight: 600;
+}
+
+.column-header > button {
+  justify-self: start;
 }
 
 .pill-grid {
@@ -468,10 +563,25 @@ select option {
 
 .assessment-item,
 .material-item {
+  position: relative;
+  overflow: hidden;
   padding: 22px;
   border-radius: 16px;
   background: #FFFFFF;
   border: 1px solid rgba(20, 20, 19, 0.05);
+}
+
+.assessment-item::before,
+.material-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  background: transparent;
 }
 
 .field-label {
@@ -501,27 +611,27 @@ select option {
   }
 }
 
-.assessment-item.discussion,
-.material-item.reading {
-  border-left: 6px solid #C6D6B8;
+.assessment-item.discussion::before,
+.material-item.reading::before {
+  background: #C99076;
 }
 
-.assessment-item.quiz-exam,
-.material-item.lecture-video {
-  border-left: 6px solid #B8D9E7;
+.assessment-item.quiz-exam::before,
+.material-item.lecture-video::before {
+  background: #D9B27B;
 }
 
-.assessment-item.written-assignment,
-.material-item.other-video {
-  border-left: 6px solid #F6D4A6;
+.assessment-item.written-assignment::before,
+.material-item.other-video::before {
+  background: #B9BE9A;
 }
 
-.assessment-item.interactive-activity,
-.material-item.website {
-  border-left: 6px solid #E8C0D7;
+.assessment-item.interactive-activity::before,
+.material-item.website::before {
+  background: #9FAFC6;
 }
 
-.assessment-item.other,
-.material-item.interactive-object {
-  border-left: 6px solid #BFB9E7;
+.assessment-item.other::before,
+.material-item.interactive-object::before {
+  background: #A89EA8;
 }
