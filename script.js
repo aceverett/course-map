@@ -719,15 +719,22 @@ function initEventBindings() {
     if (state.clos.length >= 10) return;
     state.clos.push('');
     syncClosInMos();
-    saveState();
+    try { saveState(); } catch (e) { /* ignore storage errors */ }
     render();
   });
 
-  elements.addModuleBtn.addEventListener('click', () => {
-    state.modules.push(createDefaultModule());
-    saveState();
-    render();
-  });
+  if (elements.addModuleBtn) {
+    elements.addModuleBtn.addEventListener('click', () => {
+      state.modules.push(createDefaultModule());
+      // render first so user sees immediate feedback, then attempt to save
+      render();
+      try {
+        saveState();
+      } catch (e) {
+        // ignore storage errors (e.g., private mode)
+      }
+    });
+  }
 
   elements.alignmentCheckBtn.addEventListener('click', () => {
     const issues = getAlignmentIssues();
