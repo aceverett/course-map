@@ -546,7 +546,9 @@ function renderModules(alignmentIssues) {
       const content = assessmentNode.querySelector('.collapsible-content');
       const details = assessmentNode.querySelector('.assessment-details');
       const summary = assessmentNode.querySelector('.assessment-card-summary');
-      assessmentItem.classList.add(typeSlug(assessment.type || '')); 
+      if (assessment.type) {
+        assessmentItem.classList.add(typeSlug(assessment.type));
+      }
 
       cardExpandState(assessmentItem, assessment, summary);
 
@@ -623,7 +625,9 @@ function renderModules(alignmentIssues) {
       const toggle = materialNode.querySelector('.card-toggle');
       const details = materialNode.querySelector('.material-details');
       const summary = materialNode.querySelector('.material-card-summary');
-      materialItem.classList.add(typeSlug(material.type || ''));
+      if (material.type) {
+        materialItem.classList.add(typeSlug(material.type));
+      }
 
       cardExpandState(materialItem, material, summary);
 
