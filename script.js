@@ -25,14 +25,12 @@ const materialTypes = [
   'Other'
 ];
 
-const moduleCountRange = { min: 7, max: 15 };
 const storageKey = 'courseMapDraft';
 
 let state = {
   courseNumber: '',
   courseName: '',
   clos: ['', '', ''],
-  moduleCount: 7,
   modules: []
 };
 
@@ -41,7 +39,6 @@ const elements = {
   courseName: document.getElementById('courseName'),
   cloList: document.getElementById('cloList'),
   addCloBtn: document.getElementById('addCloBtn'),
-  moduleCountSelect: document.getElementById('moduleCountSelect'),
   modulesSection: document.getElementById('modulesSection'),
   alignmentSummary: document.getElementById('alignmentSummary'),
   alignmentCheckBtn: document.getElementById('alignmentCheckBtn'),
@@ -91,7 +88,6 @@ function loadState() {
         ...state,
         ...parsed,
         clos: Array.isArray(parsed.clos) && parsed.clos.length ? parsed.clos : state.clos,
-        moduleCount: typeof parsed.moduleCount === 'number' ? parsed.moduleCount : state.moduleCount,
         modules: Array.isArray(parsed.modules) ? parsed.modules : []
       };
     }
@@ -107,19 +103,12 @@ function loadState() {
     state.clos = state.clos.slice(0, 10);
   }
 
-  if (typeof state.moduleCount !== 'number') {
-    state.moduleCount = 7;
-  }
-
   if (!Array.isArray(state.modules)) {
     state.modules = [];
   }
 
-  while (state.modules.length < state.moduleCount) {
+  if (state.modules.length === 0) {
     state.modules.push(createDefaultModule());
-  }
-  if (state.modules.length > state.moduleCount) {
-    state.modules = state.modules.slice(0, state.moduleCount);
   }
 
   state.modules = state.modules.map(module => {
@@ -443,6 +432,15 @@ function renderModules(alignmentIssues) {
       saveState();
     });
 
+    const deleteModuleBtn = moduleNode.querySelector('.delete-module');
+    deleteModuleBtn.disabled = state.modules.length <= 1;
+    deleteModuleBtn.addEventListener('click', () => {
+      if (state.modules.length <= 1) return;
+      state.modules.splice(moduleIndex, 1);
+      saveState();
+      render();
+    });
+
     const moList = moduleNode.querySelector('.mo-list');
     const addMoButton = moduleNode.querySelector('.add-mo');
     addMoButton.addEventListener('click', () => {
@@ -657,6 +655,22 @@ function renderModules(alignmentIssues) {
 
     elements.modulesSection.appendChild(moduleNode);
   });
+
+  const addModuleRow = document.createElement('div');
+  addModuleRow.className = 'module-add-row';
+
+  const addModuleButton = document.createElement('button');
+  addModuleButton.type = 'button';
+  addModuleButton.className = 'button large outline add-module';
+  addModuleButton.textContent = '+ Module';
+  addModuleButton.addEventListener('click', () => {
+    state.modules.push(createDefaultModule());
+    saveState();
+    render();
+  });
+
+  addModuleRow.appendChild(addModuleButton);
+  elements.modulesSection.appendChild(addModuleRow);
 }
 
 function cardExpandState(cardItem, itemState, summary) {
@@ -684,19 +698,7 @@ function renderAlignmentSummary(alignmentIssues) {
   });
 }
 
-function renderModuleCountOptions() {
-  elements.moduleCountSelect.innerHTML = '';
-  for (let count = moduleCountRange.min; count <= moduleCountRange.max; count += 1) {
-    const option = document.createElement('option');
-    option.value = count;
-    option.textContent = `${count} modules`;
-    elements.moduleCountSelect.appendChild(option);
-  }
-  elements.moduleCountSelect.value = state.moduleCount;
-}
-
 function render() {
-  renderModuleCountOptions();
   elements.courseNumber.value = state.courseNumber;
   elements.courseName.value = state.courseName;
   const issues = getAlignmentIssues();
@@ -722,21 +724,6 @@ function initEventBindings() {
     syncClosInMos();
     saveState();
     render();
-  });
-
-  elements.moduleCountSelect.addEventListener('change', event => {
-    const selected = Number(event.target.value);
-    if (!Number.isNaN(selected) && selected >= moduleCountRange.min && selected <= moduleCountRange.max) {
-      state.moduleCount = selected;
-      while (state.modules.length < state.moduleCount) {
-        state.modules.push(createDefaultModule());
-      }
-      if (state.modules.length > state.moduleCount) {
-        state.modules = state.modules.slice(0, state.moduleCount);
-      }
-      saveState();
-      render();
-    }
   });
 
   elements.alignmentCheckBtn.addEventListener('click', () => {

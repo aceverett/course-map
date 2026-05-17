@@ -322,6 +322,27 @@ select option {
   font-size: 0.92rem;
 }
 
+.button.large {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 1rem;
+}
+
+.module-add-row {
+  margin-top: 24px;
+}
+
+.module-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.module-card-header > div {
+  min-width: 0;
+}
+
 .button.danger {
   background: transparent;
   color: #8C4A36;

@@ -50,19 +50,6 @@
         </div>
       </section>
 
-      <section class="card">
-        <div class="card-header">
-          <h2>Course Modules</h2>
-          <p>Select the number of modules to build the module outline.</p>
-        </div>
-        <div class="field">
-          <label>
-            <span>Number of Modules</span>
-            <select id="moduleCountSelect"></select>
-          </label>
-        </div>
-      </section>
-
       <section id="modulesSection"></section>
 
       <section class="card notice-card" id="alignmentSummaryCard">
@@ -94,11 +81,12 @@
 
   <template id="moduleTemplate">
     <section class="card module-card">
-      <div class="card-header">
+      <div class="card-header module-card-header">
         <div>
           <h2 class="module-title">Module <span class="module-index"></span></h2>
           <p class="field-note module-note">Give the module a title and add module objectives, assessments, and materials.</p>
         </div>
+        <button type="button" class="button small danger delete-module">Delete</button>
       </div>
       <div class="field">
         <label>
