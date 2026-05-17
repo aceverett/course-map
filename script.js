@@ -40,6 +40,7 @@ const elements = {
   cloList: document.getElementById('cloList'),
   addCloBtn: document.getElementById('addCloBtn'),
   modulesSection: document.getElementById('modulesSection'),
+  addModuleBtn: document.getElementById('addModuleBtn'),
   alignmentSummary: document.getElementById('alignmentSummary'),
   alignmentCheckBtn: document.getElementById('alignmentCheckBtn'),
   downloadWordBtn: document.getElementById('downloadWordBtn')
@@ -667,22 +668,6 @@ function renderModules(alignmentIssues) {
 
     elements.modulesSection.appendChild(moduleNode);
   });
-
-  const addModuleRow = document.createElement('div');
-  addModuleRow.className = 'module-add-row';
-
-  const addModuleButton = document.createElement('button');
-  addModuleButton.type = 'button';
-  addModuleButton.className = 'button large outline add-module';
-  addModuleButton.textContent = '+ Module';
-  addModuleButton.addEventListener('click', () => {
-    state.modules.push(createDefaultModule());
-    saveState();
-    render();
-  });
-
-  addModuleRow.appendChild(addModuleButton);
-  elements.modulesSection.appendChild(addModuleRow);
 }
 
 function cardExpandState(cardItem, itemState, summary) {
@@ -734,6 +719,12 @@ function initEventBindings() {
     if (state.clos.length >= 10) return;
     state.clos.push('');
     syncClosInMos();
+    saveState();
+    render();
+  });
+
+  elements.addModuleBtn.addEventListener('click', () => {
+    state.modules.push(createDefaultModule());
     saveState();
     render();
   });
