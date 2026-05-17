@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Course Mapping Tool</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Course Mapping for Instructional Design</p>
+        <h1>Course Mapping Tool</h1>
+        <p class="subtitle">Collaborate with SMEs to define CLOs, modules, objectives, assessments, and materials.</p>
+      </div>
+      <div class="actions">
+        <button id="alignmentCheckBtn" class="button outline">Alignment Check</button>
+        <button id="downloadWordBtn" class="button solid">Download Word</button>
+      </div>
+    </header>
+
+    <main class="content" id="content">
+      <section class="card card-hero">
+        <div class="card-header">
+          <h2>Start with course details</h2>
+          <p>Provide the course number and name, then define the course learning objectives.</p>
+        </div>
+        <div class="form-grid">
+          <label class="field">
+            <span>Course Number</span>
+            <input id="courseNumber" type="text" placeholder="e.g. EDU 101" />
+          </label>
+          <label class="field">
+            <span>Course Name</span>
+            <input id="courseName" type="text" placeholder="e.g. Foundations of Online Learning" />
+          </label>
+        </div>
+      </section>
+
+      <section class="card" id="cloSection">
+        <div class="card-header">
+          <h2>Course Learning Objectives (CLOs)</h2>
+          <p>Start with 3 CLOs. Add up to 10 objectives and avoid vague verbs.</p>
+        </div>
+        <div id="cloList" class="list-stack"></div>
+        <div class="section-footer">
+          <button id="addCloBtn" class="button outline">Add CLO</button>
+          <span class="hint">Minimum 1 CLO, maximum 10 CLOs.</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Course Modules</h2>
+          <p>Select the number of modules to build the module outline.</p>
+        </div>
+        <div class="field">
+          <label>
+            <span>Number of Modules</span>
+            <select id="moduleCountSelect"></select>
+          </label>
+        </div>
+      </section>
+
+      <section id="modulesSection"></section>
+
+      <section class="card notice-card" id="alignmentSummaryCard">
+        <div class="card-header">
+          <h2>Alignment summary</h2>
+          <p>Use this section to review any missing alignments.</p>
+        </div>
+        <div id="alignmentSummary" class="notice-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <template id="cloTemplate">
+    <div class="list-item clo-item">
+      <div class="list-item-header">
+        <div>
+          <h3 class="subheading">CLO <span class="clo-number"></span></h3>
+          <p class="field-note">Use a measurable action verb from Bloom's Taxonomy.</p>
+        </div>
+        <button type="button" class="button small danger delete-clo">Delete</button>
+      </div>
+      <label class="field">
+        <span>Objective text</span>
+        <input class="clo-text" type="text" placeholder="Write a measurable learning objective" />
+      </label>
+      <p class="field-note hidden vague-warning"></p>
+      <p class="field-note hidden clo-unassigned"></p>
+    </div>
+  </template>
+
+  <template id="moduleTemplate">
+    <section class="card module-card">
+      <div class="card-header">
+        <div>
+          <h2 class="module-title">Module <span class="module-index"></span></h2>
+          <p class="field-note module-note">Give the module a title and align it to at least one CLO.</p>
+        </div>
+      </div>
+      <div class="field">
+        <label>
+          <span>Module title</span>
+          <input class="module-title-input" type="text" placeholder="e.g. Introduction to Learning Theory" />
+        </label>
+      </div>
+      <div class="field">
+        <span class="field-label">Aligned CLOs</span>
+        <div class="checkbox-grid clo-checkboxes"></div>
+        <p class="field-note hidden module-clo-warning"></p>
+      </div>
+      <div class="subsection">
+        <div class="subsection-header">
+          <h3>Module Objectives (MOs)</h3>
+          <button type="button" class="button small outline add-mo">Add MO</button>
+        </div>
+        <div class="mo-list"></div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-header">
+          <h3>Assessments</h3>
+          <button type="button" class="button small outline add-assessment">Add Assessment</button>
+        </div>
+        <div class="assessment-list"></div>
+      </div>
+      <div class="subsection">
+        <div class="subsection-header">
+          <h3>Instructional Materials</h3>
+          <button type="button" class="button small outline add-material">Add Material</button>
+        </div>
+        <div class="material-list"></div>
+      </div>
+    </section>
+  </template>
+
+  <template id="moTemplate">
+    <div class="list-item mo-item">
+      <div class="list-item-header">
+        <h4 class="subheading">MO <span class="mo-number"></span></h4>
+        <button type="button" class="button small danger delete-mo">Delete</button>
+      </div>
+      <label class="field">
+        <span>Objective text</span>
+        <input class="mo-text" type="text" placeholder="Write a module objective" />
+      </label>
+      <p class="field-note hidden vague-warning"></p>
+      <p class="field-note hidden mo-unassigned"></p>
+    </div>
+  </template>
+
+  <template id="assessmentTemplate">
+    <div class="list-item assessment-item">
+      <div class="list-item-header">
+        <h4 class="subheading">Assessment</h4>
+        <button type="button" class="button small danger delete-assessment">Delete</button>
+      </div>
+      <div class="grid-2">
+        <label class="field">
+          <span>Assessment type</span>
+          <select class="assessment-type">
+            <option>Discussion</option>
+            <option>Quiz/Exam</option>
+            <option>Written Assignment</option>
+            <option>Interactive Activity</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Description</span>
+          <input class="assessment-desc" type="text" placeholder="Describe the assessment" />
+        </label>
+      </div>
+      <div class="field">
+        <span class="field-label">Align with MOs</span>
+        <div class="checkbox-grid mos-checkboxes"></div>
+        <p class="field-note hidden assessment-mos-warning"></p>
+      </div>
+    </div>
+  </template>
+
+  <template id="materialTemplate">
+    <div class="list-item material-item">
+      <div class="list-item-header">
+        <h4 class="subheading">Material</h4>
+        <button type="button" class="button small danger delete-material">Delete</button>
+      </div>
+      <div class="grid-2">
+        <label class="field">
+          <span>Material type</span>
+          <select class="material-type">
+            <option>Reading</option>
+            <option>Lecture Video</option>
+            <option>Other Video</option>
+            <option>Website</option>
+            <option>Interactive Object</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Description</span>
+          <input class="material-desc" type="text" placeholder="Describe the instructional material" />
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
