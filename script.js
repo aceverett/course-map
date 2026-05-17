@@ -725,13 +725,14 @@ function initEventBindings() {
 
   if (elements.addModuleBtn) {
     elements.addModuleBtn.addEventListener('click', () => {
-      state.modules.push(createDefaultModule());
-      // render first so user sees immediate feedback, then attempt to save
-      render();
+      console.log('addModuleBtn clicked');
       try {
-        saveState();
-      } catch (e) {
-        // ignore storage errors (e.g., private mode)
+        state.modules.push(createDefaultModule());
+        // render first so user sees immediate feedback
+        render();
+        try { saveState(); } catch (e) { console.warn('saveState failed', e); }
+      } catch (err) {
+        console.error('Error in addModule handler:', err);
       }
     });
   }
@@ -849,5 +850,21 @@ function init() {
   initEventBindings();
   render();
 }
+
+// Global fallback for environments where event binding fails.
+window.__lastAddModule = 0;
+window.__fallbackAddModule = function() {
+  try {
+    const now = Date.now();
+    if (now - (window.__lastAddModule || 0) < 500) return; // debounce duplicates
+    window.__lastAddModule = now;
+    if (!state || !Array.isArray(state.modules)) state.modules = [createDefaultModule()];
+    state.modules.push(createDefaultModule());
+    try { render(); } catch (e) { console.warn('render failed in fallback', e); }
+    try { saveState(); } catch (e) { console.warn('saveState failed in fallback', e); }
+  } catch (err) {
+    console.error('fallback addModule error', err);
+  }
+};
 
 init();
