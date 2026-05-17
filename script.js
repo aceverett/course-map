@@ -189,6 +189,16 @@ function buildCheckbox(labelText, checked, name, value) {
   return wrapper;
 }
 
+function buildToggleButton(labelText, active) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'pill-button';
+  if (active) button.classList.add('active');
+  button.textContent = labelText;
+  button.setAttribute('aria-pressed', active ? 'true' : 'false');
+  return button;
+}
+
 function renderCLOs(alignmentIssues) {
   elements.cloList.innerHTML = '';
   state.clos.forEach((clo, index) => {
@@ -203,7 +213,6 @@ function renderCLOs(alignmentIssues) {
       state.clos[index] = event.target.value;
       syncClosToModules();
       saveState();
-      render();
     });
 
     const deleteButton = item.querySelector('.delete-clo');
@@ -261,16 +270,15 @@ function renderModules(alignmentIssues) {
       saveState();
     });
 
-    const cloContainer = moduleNode.querySelector('.clo-checkboxes');
+    const cloContainer = moduleNode.querySelector('.clo-pills');
     state.clos.forEach((clo, cloIndex) => {
-      const checkboxField = buildCheckbox(`CLO ${cloIndex + 1}`, module.alignedClos[cloIndex], `module-${moduleIndex}-clo`, cloIndex);
-      const checkbox = checkboxField.querySelector('input');
-      checkbox.addEventListener('change', event => {
-        state.modules[moduleIndex].alignedClos[cloIndex] = event.target.checked;
+      const pill = buildToggleButton(`CLO ${cloIndex + 1}`, module.alignedClos[cloIndex]);
+      pill.addEventListener('click', () => {
+        state.modules[moduleIndex].alignedClos[cloIndex] = !state.modules[moduleIndex].alignedClos[cloIndex];
         saveState();
         render();
       });
-      cloContainer.appendChild(checkboxField);
+      cloContainer.appendChild(pill);
     });
 
     const moduleCloWarning = moduleNode.querySelector('.module-clo-warning');
@@ -301,7 +309,6 @@ function renderModules(alignmentIssues) {
       moInput.addEventListener('input', event => {
         state.modules[moduleIndex].mos[moIndex].text = event.target.value;
         saveState();
-        render();
       });
       const deleteMoBtn = moNode.querySelector('.delete-mo');
       deleteMoBtn.disabled = state.modules[moduleIndex].mos.length <= 1;
@@ -365,16 +372,15 @@ function renderModules(alignmentIssues) {
         saveState();
         render();
       });
-      const mosCheckboxes = assessmentNode.querySelector('.mos-checkboxes');
+      const mosContainer = assessmentNode.querySelector('.mos-pills');
       module.mos.forEach((_, moIndex) => {
-        const checkboxField = buildCheckbox(`MO ${moduleIndex + 1}.${moIndex + 1}`, assessment.alignedMos[moIndex], `module-${moduleIndex}-assessment-${assessmentIndex}-mo`, moIndex);
-        const checkbox = checkboxField.querySelector('input');
-        checkbox.addEventListener('change', event => {
-          state.modules[moduleIndex].assessments[assessmentIndex].alignedMos[moIndex] = event.target.checked;
+        const pill = buildToggleButton(`MO ${moduleIndex + 1}.${moIndex + 1}`, assessment.alignedMos[moIndex]);
+        pill.addEventListener('click', () => {
+          state.modules[moduleIndex].assessments[assessmentIndex].alignedMos[moIndex] = !state.modules[moduleIndex].assessments[assessmentIndex].alignedMos[moIndex];
           saveState();
           render();
         });
-        mosCheckboxes.appendChild(checkboxField);
+        mosContainer.appendChild(pill);
       });
       const assessmentWarning = assessmentNode.querySelector('.assessment-mos-warning');
       const assessmentIssue = alignmentIssues.find(issue => issue.includes(`assessment ${assessmentIndex + 1}`));

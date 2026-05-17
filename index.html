@@ -12,7 +12,7 @@
       <div>
         <p class="eyebrow">Course Mapping for Instructional Design</p>
         <h1>Course Mapping Tool</h1>
-        <p class="subtitle">Collaborate with SMEs to define CLOs, modules, objectives, assessments, and materials.</p>
+        <p class="subtitle">Use this tool to help you plan your course and ensure alignment between objectives, assessments, and materials.</p>
       </div>
       <div class="actions">
         <button id="alignmentCheckBtn" class="button outline">Alignment Check</button>
@@ -41,7 +41,7 @@
       <section class="card" id="cloSection">
         <div class="card-header">
           <h2>Course Learning Objectives (CLOs)</h2>
-          <p>Start with 3 CLOs. Add up to 10 objectives and avoid vague verbs.</p>
+          <p>Start with 3 CLOs. Add up to 10 objectives and use specific Bloom's Taxonomy verbs rather than vague wording.</p>
         </div>
         <div id="cloList" class="list-stack"></div>
         <div class="section-footer">
@@ -80,7 +80,6 @@
       <div class="list-item-header">
         <div>
           <h3 class="subheading">CLO <span class="clo-number"></span></h3>
-          <p class="field-note">Use a measurable action verb from Bloom's Taxonomy.</p>
         </div>
         <button type="button" class="button small danger delete-clo">Delete</button>
       </div>
@@ -107,31 +106,35 @@
           <input class="module-title-input" type="text" placeholder="e.g. Introduction to Learning Theory" />
         </label>
       </div>
-      <div class="field">
-        <span class="field-label">Aligned CLOs</span>
-        <div class="checkbox-grid clo-checkboxes"></div>
-        <p class="field-note hidden module-clo-warning"></p>
-      </div>
-      <div class="subsection">
-        <div class="subsection-header">
-          <h3>Module Objectives (MOs)</h3>
-          <button type="button" class="button small outline add-mo">Add MO</button>
+      <div class="module-grid">
+        <div class="module-column">
+          <div class="column-header">
+            <span>Aligned CLOs</span>
+          </div>
+          <div class="pill-grid clo-pills"></div>
+          <p class="field-note hidden module-clo-warning"></p>
         </div>
-        <div class="mo-list"></div>
-      </div>
-      <div class="subsection">
-        <div class="subsection-header">
-          <h3>Assessments</h3>
-          <button type="button" class="button small outline add-assessment">Add Assessment</button>
+        <div class="module-column">
+          <div class="column-header">
+            <span>Module Objectives (MOs)</span>
+            <button type="button" class="button small outline add-mo">Add MO</button>
+          </div>
+          <div class="mo-list"></div>
         </div>
-        <div class="assessment-list"></div>
-      </div>
-      <div class="subsection">
-        <div class="subsection-header">
-          <h3>Instructional Materials</h3>
-          <button type="button" class="button small outline add-material">Add Material</button>
+        <div class="module-column">
+          <div class="column-header">
+            <span>Assessments</span>
+            <button type="button" class="button small outline add-assessment">Add Assessment</button>
+          </div>
+          <div class="assessment-list"></div>
         </div>
-        <div class="material-list"></div>
+        <div class="module-column">
+          <div class="column-header">
+            <span>Instructional Materials</span>
+            <button type="button" class="button small outline add-material">Add Material</button>
+          </div>
+          <div class="material-list"></div>
+        </div>
       </div>
     </section>
   </template>
@@ -175,7 +178,7 @@
       </div>
       <div class="field">
         <span class="field-label">Align with MOs</span>
-        <div class="checkbox-grid mos-checkboxes"></div>
+        <div class="pill-grid mos-pills"></div>
         <p class="field-note hidden assessment-mos-warning"></p>
       </div>
     </div>
