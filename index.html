@@ -23,7 +23,7 @@
     <main class="content" id="content">
       <section class="card card-hero">
         <div class="card-header">
-          <h2>Start with course details</h2>
+          <h2>Course Details</h2>
           <p>Provide the course number and name, then define the course learning objectives.</p>
         </div>
         <div class="form-grid">
@@ -97,7 +97,7 @@
       <div class="card-header">
         <div>
           <h2 class="module-title">Module <span class="module-index"></span></h2>
-          <p class="field-note module-note">Give the module a title and align it to at least one CLO.</p>
+          <p class="field-note module-note">Give the module a title and add module objectives, assessments, and materials.</p>
         </div>
       </div>
       <div class="field">
@@ -109,29 +109,22 @@
       <div class="module-grid">
         <div class="module-column">
           <div class="column-header">
-            <span>Aligned CLOs</span>
-          </div>
-          <div class="pill-grid clo-pills"></div>
-          <p class="field-note hidden module-clo-warning"></p>
-        </div>
-        <div class="module-column">
-          <div class="column-header">
             <span>Module Objectives (MOs)</span>
-            <button type="button" class="button small outline add-mo">Add MO</button>
+            <button type="button" class="button small outline add-mo">+ Module Objective</button>
           </div>
           <div class="mo-list"></div>
         </div>
         <div class="module-column">
           <div class="column-header">
             <span>Assessments</span>
-            <button type="button" class="button small outline add-assessment">Add Assessment</button>
+            <button type="button" class="button small outline add-assessment">+ Add Assessment</button>
           </div>
           <div class="assessment-list"></div>
         </div>
         <div class="module-column">
           <div class="column-header">
             <span>Instructional Materials</span>
-            <button type="button" class="button small outline add-material">Add Material</button>
+            <button type="button" class="button small outline add-material">+ Add Material</button>
           </div>
           <div class="material-list"></div>
         </div>
@@ -140,72 +133,96 @@
   </template>
 
   <template id="moTemplate">
-    <div class="list-item mo-item">
-      <div class="list-item-header">
-        <h4 class="subheading">MO <span class="mo-number"></span></h4>
+    <div class="list-item mo-item collapsible-card expanded">
+      <button type="button" class="card-toggle">
+        <div>
+          <h4 class="subheading">MO <span class="mo-number"></span></h4>
+          <p class="field-note hidden mo-card-summary"></p>
+        </div>
+        <span class="toggle-icon">▾</span>
+      </button>
+      <div class="collapsible-content">
+        <label class="field">
+          <span>Objective text</span>
+          <input class="mo-text" type="text" placeholder="Write a module objective" />
+        </label>
+        <div class="field">
+          <span class="field-label">Align with CLOs</span>
+          <div class="pill-grid mo-clo-pills"></div>
+        </div>
+        <p class="field-note hidden vague-warning"></p>
+        <p class="field-note hidden mo-unassigned"></p>
         <button type="button" class="button small danger delete-mo">Delete</button>
       </div>
-      <label class="field">
-        <span>Objective text</span>
-        <input class="mo-text" type="text" placeholder="Write a module objective" />
-      </label>
-      <p class="field-note hidden vague-warning"></p>
-      <p class="field-note hidden mo-unassigned"></p>
     </div>
   </template>
 
   <template id="assessmentTemplate">
-    <div class="list-item assessment-item">
-      <div class="list-item-header">
-        <h4 class="subheading">Assessment</h4>
-        <button type="button" class="button small danger delete-assessment">Delete</button>
-      </div>
-      <div class="grid-2">
+    <div class="list-item assessment-item collapsible-card expanded">
+      <button type="button" class="card-toggle">
+        <div>
+          <h4 class="subheading">Assessment</h4>
+          <p class="field-note hidden assessment-card-summary"></p>
+        </div>
+        <span class="toggle-icon">▾</span>
+      </button>
+      <div class="collapsible-content">
         <label class="field">
           <span>Assessment type</span>
           <select class="assessment-type">
-            <option>Discussion</option>
-            <option>Quiz/Exam</option>
-            <option>Written Assignment</option>
-            <option>Interactive Activity</option>
-            <option>Other</option>
+            <option value="">Select a type</option>
+            <option value="Discussion">🔵 Discussion</option>
+            <option value="Quiz/Exam">🟩 Quiz/Exam</option>
+            <option value="Written Assignment">🟠 Written Assignment</option>
+            <option value="Interactive Activity">🟣 Interactive Activity</option>
+            <option value="Other">⚪ Other</option>
           </select>
         </label>
-        <label class="field">
-          <span>Description</span>
-          <input class="assessment-desc" type="text" placeholder="Describe the assessment" />
-        </label>
-      </div>
-      <div class="field">
-        <span class="field-label">Align with MOs</span>
-        <div class="pill-grid mos-pills"></div>
-        <p class="field-note hidden assessment-mos-warning"></p>
+        <div class="assessment-details hidden">
+          <label class="field">
+            <span>Description</span>
+            <input class="assessment-desc" type="text" placeholder="Describe the assessment" />
+          </label>
+          <div class="field">
+            <span class="field-label">Align with MOs</span>
+            <div class="pill-grid mos-pills"></div>
+            <p class="field-note hidden assessment-mos-warning"></p>
+          </div>
+          <button type="button" class="button small danger delete-assessment">Delete</button>
+        </div>
       </div>
     </div>
   </template>
 
   <template id="materialTemplate">
-    <div class="list-item material-item">
-      <div class="list-item-header">
-        <h4 class="subheading">Material</h4>
-        <button type="button" class="button small danger delete-material">Delete</button>
-      </div>
-      <div class="grid-2">
+    <div class="list-item material-item collapsible-card expanded">
+      <button type="button" class="card-toggle">
+        <div>
+          <h4 class="subheading">Material</h4>
+          <p class="field-note hidden material-card-summary"></p>
+        </div>
+        <span class="toggle-icon">▾</span>
+      </button>
+      <div class="collapsible-content">
         <label class="field">
           <span>Material type</span>
           <select class="material-type">
-            <option>Reading</option>
-            <option>Lecture Video</option>
-            <option>Other Video</option>
-            <option>Website</option>
-            <option>Interactive Object</option>
-            <option>Other</option>
+            <option value="">Select a type</option>
+            <option value="Reading">📘 Reading</option>
+            <option value="Lecture Video">🎥 Lecture Video</option>
+            <option value="Other Video">📺 Other Video</option>
+            <option value="Website">🌐 Website</option>
+            <option value="Interactive Object">🧩 Interactive Object</option>
+            <option value="Other">⚪ Other</option>
           </select>
         </label>
-        <label class="field">
-          <span>Description</span>
-          <input class="material-desc" type="text" placeholder="Describe the instructional material" />
-        </label>
+        <div class="material-details hidden">
+          <label class="field">
+            <span>Description</span>
+            <input class="material-desc" type="text" placeholder="Describe the instructional material" />
+          </label>
+          <button type="button" class="button small danger delete-material">Delete</button>
+        </div>
       </div>
     </div>
   </template>
