@@ -418,8 +418,20 @@ function syncClosInMos() {
 
 function renderModules(alignmentIssues) {
   elements.modulesSection.innerHTML = '';
+
+  if (!Array.isArray(state.modules) || state.modules.length === 0) {
+    state.modules = [createDefaultModule()];
+  }
+
+  const moduleTemplate = document.getElementById('moduleTemplate');
+  if (!moduleTemplate) {
+    const errorMessage = document.createElement('div');
+    errorMessage.textContent = 'Module template not found.';
+    elements.modulesSection.appendChild(errorMessage);
+    return;
+  }
+
   state.modules.forEach((module, moduleIndex) => {
-    const moduleTemplate = document.getElementById('moduleTemplate');
     const moduleNode = moduleTemplate.content.cloneNode(true);
     const moduleCard = moduleNode.querySelector('.module-card');
     const moduleIndexLabel = moduleNode.querySelector('.module-index');
