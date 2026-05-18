@@ -168,11 +168,11 @@ const typeStyleMap = {
   'written-assignment': { color: '#B9BE9A' },
   'interactive-activity': { color: '#9FAFC6' },
   other: { color: '#A89EA8' },
-  reading: { color: '#D7B292' },
-  'lecture-video': { color: '#B9B1CD' },
-  'other-video': { color: '#D6A77D' },
-  website: { color: '#98A68B' },
-  'interactive-object': { color: '#A7B3C6' }
+  reading: { color: '#C99076' },
+  'lecture-video': { color: '#D9B27B' },
+  'other-video': { color: '#B9BE9A' },
+  website: { color: '#9FAFC6' },
+  'interactive-object': { color: '#A89EA8' }
 };
 
 function buildCustomDropdown(options, selectedValue, placeholder, onSelect) {
@@ -246,12 +246,31 @@ function buildCustomDropdown(options, selectedValue, placeholder, onSelect) {
     list.hidden = true;
     toggle.setAttribute('aria-expanded', 'false');
     wrapper.classList.remove('open');
+    list.style.top = '';
+    list.style.bottom = '';
   }
 
   function openDropdown() {
     list.hidden = false;
     toggle.setAttribute('aria-expanded', 'true');
     wrapper.classList.add('open');
+    
+    // Check if dropdown would go off-screen
+    setTimeout(() => {
+      const toggleRect = toggle.getBoundingClientRect();
+      const listRect = list.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - toggleRect.bottom;
+      
+      if (spaceBelow < listRect.height + 20) {
+        // Position above instead
+        list.style.top = 'auto';
+        list.style.bottom = 'calc(100% + 10px)';
+      } else {
+        // Position below (default)
+        list.style.top = 'calc(100% + 10px)';
+        list.style.bottom = 'auto';
+      }
+    }, 0);
   }
 
   function setValue(value) {

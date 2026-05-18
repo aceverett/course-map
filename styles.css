@@ -230,8 +230,7 @@ select option {
   position: absolute;
   top: calc(100% + 10px);
   left: 0;
-  right: 0;
-  z-index: 20;
+  z-index: 1000;
   border: 1px solid var(--border);
   border-radius: 14px;
   background: #FFFFFF;
@@ -241,6 +240,7 @@ select option {
   margin: 0;
   max-height: 260px;
   overflow: auto;
+  min-width: 200px;
 }
 
 .custom-select-list[hidden] {
@@ -408,7 +408,7 @@ select option {
 .collapsible-card {
   border-radius: 16px;
   border: 1px solid var(--border);
-  overflow: hidden;
+  overflow: visible;
   background: #FFFFFF;
 }
 
@@ -590,6 +590,10 @@ select option {
   border-radius: 16px;
   background: #FFFFFF;
   border: 1px solid rgba(20, 20, 19, 0.05);
+}
+
+.material-item {
+  overflow: visible;
 }
 
 .assessment-item::before,
